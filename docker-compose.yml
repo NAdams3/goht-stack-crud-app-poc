@@ -1,0 +1,24 @@
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+      target: dev
+
+    volumes:
+      - .:/opt/app
+
+    ports:
+      - "80:3000"
+
+    links:
+      - db
+
+
+  db:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: app
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+
+  
