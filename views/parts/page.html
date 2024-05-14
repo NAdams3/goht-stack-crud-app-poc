@@ -1,11 +1,16 @@
 {{ define "page" }}
 <!DOCTYPE html>
 <html>
-    <head>
-    </head>
-    <body>
-        <p>this is the page template</p>
-        {{ template "content" }}
-    </body>
+
+<head>
+    <script src="https://unpkg.com/htmx.org@1.9.12"></script>
+    <title>Widget Manager</title>
+</head>
+
+<body>
+    <header><a href="/">Widget Manager</a></header>
+    {{template "content" . }}
+</body>
+
 </html>
-{{ end }}
+{{end}}

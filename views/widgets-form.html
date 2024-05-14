@@ -1,3 +1,14 @@
 {{ define "content" }}
-<p>this is the widget form</p>
+<form hx-post="/api/widget/0">
+    <input type="text" name="name">
+    <select name="type">
+        <option hidden selected disabled value>Select</option>
+        <option value="Very Light">Very Light</option>
+        <option value="Light">Light</option>
+        <option value="Medium">Medium</option>
+        <option value="Heavy">Heavy</option>
+        <option value="Very Heavy">Very Heavy</option>
+    </select>
+    <button type="submit">Save</button>
+</form>
 {{ end }}

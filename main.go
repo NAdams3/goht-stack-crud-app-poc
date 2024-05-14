@@ -2,10 +2,12 @@ package main
 
 import (
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"html/template"
 	"log/slog"
 	"net/http"
+	"strconv"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var templates map[string]*template.Template
@@ -33,6 +35,7 @@ func main() {
 	http.HandleFunc("/widget/create", WidgetCreate)
 	http.HandleFunc("/widget/update/", WidgetUpdate)
 	http.HandleFunc("/widgets", WidgetFilter)
+	http.HandleFunc("/api/widget/{id}", HandleWidget)
 
 	// api enpoints
 
@@ -58,8 +61,6 @@ func Render(w http.ResponseWriter, pageTemplate *template.Template, data any) {
 }
 
 func Home(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("in home")
-
 	Render(w, templates["home"], nil)
 }
 
@@ -74,8 +75,10 @@ func WidgetUpdate(w http.ResponseWriter, r *http.Request) {
 
 func WidgetFilter(w http.ResponseWriter, r *http.Request) {
 
-	template := getTemplate(templates["filter-adapter"], "views/parts/widgets-filter-form.html", "views/parts/widgets-table.html")
-	Render(w, template, nil)
+	if templates["widget-filter"] == nil {
+		templates["widget-filter"] = getTemplate(templates["filter-adapter"], "views/parts/widgets-filter-form.html", "views/parts/widgets-table.html")
+	}
+	Render(w, templates["widget-filter"], nil)
 
 }
 
@@ -87,4 +90,14 @@ func getTemplate(t *template.Template, filePaths ...string) *template.Template {
 	}
 
 	return templatePart
+}
+
+func ValidateID(id string) (int, error) {
+	valid, err := strconv.Atoi(id)
+	if err != nil {
+		return 0, err
+	}
+
+	return valid, nil
+
 }
