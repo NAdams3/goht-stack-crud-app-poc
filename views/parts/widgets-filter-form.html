@@ -1,7 +1,19 @@
 {{ define "filter-form" }}
-<a href="/widget/create">New</a>
-<form>
+<a href="/widget/new">New</a>
+<form id="filter-form" hx-post="/api/widgets/filter" hx-target="#filter-display" hx-indicator=".htmx-indicator"
+    hx-trigger="keyup, change from:(#filter-form *) delay:500ms">
+
     <input type="text" name="name">
-    <input type="text" name="type">
+
+    <select name="type">
+        <option selected value>All</option>
+        <option value="Very Light">Very Light</option>
+        <option value="Light">Light</option>
+        <option value="Medium">Medium</option>
+        <option value="Heavy">Heavy</option>
+        <option value="Very Heavy">Very Heavy</option>
+    </select>
+
 </form>
+<span class="htmx-indicator">Filtering...</span>
 {{ end }}

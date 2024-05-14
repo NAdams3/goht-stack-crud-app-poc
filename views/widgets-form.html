@@ -1,14 +1,16 @@
 {{ define "content" }}
 <form hx-post="/api/widget/0">
-    <input type="text" name="name">
-    <select name="type">
-        <option hidden selected disabled value>Select</option>
+    <input type="text" name="name" {{ if . }}value="{{ .Name }}" {{ end }}>
+
+    <select name="type" {{ if . }}value="{{ .Type }}" {{ end }}>
+        <option hidden value>Select</option>
         <option value="Very Light">Very Light</option>
         <option value="Light">Light</option>
         <option value="Medium">Medium</option>
         <option value="Heavy">Heavy</option>
         <option value="Very Heavy">Very Heavy</option>
     </select>
+
     <button type="submit">Save</button>
 </form>
 {{ end }}

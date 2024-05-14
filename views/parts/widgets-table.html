@@ -1,5 +1,5 @@
 {{ define "filter-display" }}
-<table>
+<table id="filter-display">
     <thead>
         <tr>
             <th>Name</th>
@@ -15,7 +15,7 @@
             <td>{{ $row.Type }}</td>
             <td>
                 <a href="widget/edit/{{ $row.ID }}">Edit</a>
-                <button>Delete</button>
+                <button hx-delete="/api/widget/{{ $row.ID }}">Delete</button>
             </td>
         </tr>
         {{ end }}

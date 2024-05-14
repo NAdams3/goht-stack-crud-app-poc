@@ -32,10 +32,11 @@ func main() {
 
 	// routes
 	http.HandleFunc("/", Home)
-	http.HandleFunc("/widget/create", WidgetCreate)
-	http.HandleFunc("/widget/update/", WidgetUpdate)
+	http.HandleFunc("/widget/new", WidgetCreate)
+	http.HandleFunc("/widget/edit/{id}", WidgetUpdate)
 	http.HandleFunc("/widgets", WidgetFilter)
 	http.HandleFunc("/api/widget/{id}", HandleWidget)
+	http.HandleFunc("/api/widgets/filter", FilterWidgets)
 
 	// api enpoints
 
@@ -62,24 +63,6 @@ func Render(w http.ResponseWriter, pageTemplate *template.Template, data any) {
 
 func Home(w http.ResponseWriter, r *http.Request) {
 	Render(w, templates["home"], nil)
-}
-
-func WidgetCreate(w http.ResponseWriter, r *http.Request) {
-	Render(w, templates["widgets-form"], nil)
-}
-
-func WidgetUpdate(w http.ResponseWriter, r *http.Request) {
-	// get data
-	Render(w, templates["widgets-form"], nil)
-}
-
-func WidgetFilter(w http.ResponseWriter, r *http.Request) {
-
-	if templates["widget-filter"] == nil {
-		templates["widget-filter"] = getTemplate(templates["filter-adapter"], "views/parts/widgets-filter-form.html", "views/parts/widgets-table.html")
-	}
-	Render(w, templates["widget-filter"], nil)
-
 }
 
 func getTemplate(t *template.Template, filePaths ...string) *template.Template {
