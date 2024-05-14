@@ -20,5 +20,8 @@ services:
     environment:
       MYSQL_DATABASE: app
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes:
+      - ./schema:/schema
+
 
   

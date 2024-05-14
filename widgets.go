@@ -8,7 +8,8 @@ import (
 
 func HandleWidget(w http.ResponseWriter, r *http.Request) {
 
-	var urlID string
+	urlID := r.PathValue("id")
+	fmt.Printf("urlID: %v \n", urlID)
 	id, err := ValidateID(urlID)
 	if err != nil {
 		log.Fatal(err)
@@ -33,7 +34,14 @@ func HandleWidget(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		widget.Create()
+		fmt.Printf("widget: %v \n", widget)
+
+		err = widget.Create()
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		w.Header().Set("HX-Location", fmt.Sprintf("/widget/update/%d", widget.ID))
 
 	case "PUT":
 		fmt.Println("method is put")
@@ -43,11 +51,17 @@ func HandleWidget(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(err)
 		}
 
-		widget.Update()
+		err = widget.Update()
+		if err != nil {
+			log.Fatal(err)
+		}
 
 	case "DELETE":
 		fmt.Println("method is delete")
-		widget.Delete()
+		err = widget.Delete()
+		if err != nil {
+			log.Fatal(err)
+		}
 
 	default:
 		fmt.Printf("method is: %v \n", method)

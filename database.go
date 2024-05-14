@@ -5,19 +5,21 @@ import (
 	"time"
 )
 
-var pool *sql.DB
+var POOL *sql.DB
 
 func initDB() error {
 
-	pool, err := sql.Open("mysql", "root:@/app")
+	var err error
+
+	POOL, err = sql.Open("mysql", "root:@tcp(db)/app")
 	if err != nil {
 		return err
 	}
 
-	pool.SetConnMaxLifetime(time.Minute * 3)
-	pool.SetConnMaxIdleTime(time.Minute * 5)
-	pool.SetMaxIdleConns(1)
-	pool.SetMaxOpenConns(3)
+	POOL.SetConnMaxLifetime(time.Minute * 3)
+	POOL.SetConnMaxIdleTime(time.Minute * 5)
+	POOL.SetMaxIdleConns(1)
+	POOL.SetMaxOpenConns(3)
 
 	return nil
 

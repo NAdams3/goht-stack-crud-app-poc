@@ -12,7 +12,7 @@ type Widget struct {
 	Type string
 }
 
-func (widget Widget) ValidateAndSet(form url.Values) error {
+func (widget *Widget) ValidateAndSet(form url.Values) error {
 	var err error
 
 	if form["name"] == nil || len(form["name"]) == 0 || form["name"][0] == "" {
@@ -27,11 +27,26 @@ func (widget Widget) ValidateAndSet(form url.Values) error {
 		widget.Type = form["type"][0]
 	}
 
+	fmt.Printf("widget in val and set: %v \n", widget)
+
 	return err
 }
 
-func (widget Widget) Create() error {
-	fmt.Printf("creating widget: %v \n", widget)
+func (widget *Widget) Create() error {
+	query := `INSERT INTO widgets (name, type) VALUES (?, ?)`
+
+	result, err := POOL.Exec(query, widget.Name, widget.Type)
+	if err != nil {
+		return err
+	}
+
+	lastID, err := result.LastInsertId()
+	if err != nil {
+		return err
+	}
+
+	widget.ID = int(lastID)
+
 	return nil
 }
 
